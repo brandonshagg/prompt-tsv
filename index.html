@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Schedule Formatter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #282828;
+            color: #fbfcf8;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #d1e0c9, #2c5293);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        #prompt {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-6xl w-full">
+        <header class="text-center mb-16">
+            <h1 class="text-7xl font-bold mb-4 gradient-text tracking-tight">Staff Schedule Formatter</h1>
+            <p class="text-xl text-[#e4e4d8]">Transform your schedules with ease and style</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <section class="space-y-8">
+                <h2 class="text-4xl font-semibold mb-8 text-[#d1e0c9]">Instructions</h2>
+                <ol class="list-none space-y-4 text-lg">
+                    <li class="flex items-center hover-lift">
+                        <span class="text-3xl mr-4 text-[#2c5293]">01</span>
+                        <span>Convert to Tab-Separated Values (TSV) format</span>
+                    </li>
+                    <li class="flex items-center hover-lift">
+                        <span class="text-3xl mr-4 text-[#2c5293]">02</span>
+                        <span>Use column order: NAME, Position, Start, End, NOTES</span>
+                    </li>
+                    <li class="flex items-center hover-lift">
+                        <span class="text-3xl mr-4 text-[#2c5293]">03</span>
+                        <span>Format names as "LAST NAME, FIRST NAME" in capitals</span>
+                    </li>
+                    <li class="flex items-center hover-lift">
+                        <span class="text-3xl mr-4 text-[#2c5293]">04</span>
+                        <span>Group by positions (RN, LPN, PCT, NA, UC)</span>
+                    </li>
+                    <li class="flex items-center hover-lift">
+                        <span class="text-3xl mr-4 text-[#2c5293]">05</span>
+                        <span>Add empty line between position groups</span>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-4xl font-semibold mb-8 text-[#d1e0c9]">Example</h2>
+                <div class="bg-[#2c5293] bg-opacity-20 p-6 rounded-lg backdrop-blur-sm floating">
+                    <pre class="text-sm text-[#e4e4d8] overflow-x-auto">
+NAME    Position    Start   End     NOTES
+
+SMITH, JOHN     RN  07:00   15:30   Charge Nurse
+DOE, JANE       RN  08:00   16:30
+
+JOHNSON, MARY   LPN 07:30   16:00
+WILLIAMS, ROBERT LPN 08:30   17:00
+
+BROWN, SARAH    PCT 06:30   15:00
+DAVIS, MICHAEL  PCT 07:00   15:30
+                    </pre>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-16 text-center">
+            <h2 class="text-4xl font-semibold mb-8 text-[#d1e0c9]">Ready to format?</h2>
+            <button id="copyPrompt" class="bg-[#2b5566] hover:bg-[#2c5293] text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+                Copy Prompt
+            </button>
+        </footer>
+    </div>
+
+    <div id="prompt">
+Please format the given staff schedule according to the following instructions:
+1. Convert the schedule into a Tab-Separated Values (TSV) format.
+2. Use the following column order: NAME, Position, Start, End, NOTES.
+3. Format names as "LAST NAME, FIRST NAME" in all capital letters.
+4. Group staff members by their positions (e.g., RN, LPN, PCT, NA, UC).
+5. Add an empty line between each position group for readability.
+6. Remove any staff members who don't have both start and end times listed.
+7. Maintain the original order of staff within each position group.
+8. The first line should be the column headers.
+
+Please apply this formatting to the given schedule, ensuring all staff are properly grouped and formatted according to these instructions.
+    </div>
+
+    <script>
+        const copyPromptBtn = document.getElementById('copyPrompt');
+        const prompt = document.getElementById('prompt');
+
+        copyPromptBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(prompt.textContent.trim())
+                .then(() => {
+                    copyPromptBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyPromptBtn.textContent = 'Copy Prompt';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy prompt. Please try again.');
+                });
+        });
+    </script>
+</body>
+</html>
